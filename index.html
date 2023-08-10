@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" async class="remove"></script>
+    <title>Protocol Handler Requirements</title>
+    <style>
+      body {
+        background: url(proposal.svg) no-repeat fixed !important;
+        background-size: 25px 380px !important;
+      }
+    </style>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: 'unofficial',
+        postProcess: [(config, doc) => {
+          let time = doc.querySelector('#w3c-state time')
+            , h2 = doc.querySelector('#w3c-state')
+          ;
+          h2.innerHTML = 'Proposal ';
+          h2.appendChild(time);
+        }],
+        editors: [{
+          name: 'Robin Berjon',
+          company: 'Protocol Labs',
+          url: 'https://berjon.com/',
+        }],
+        github: {
+          repoURL: 'https://github.com/darobin/proto-handler-reqs',
+          branch: 'main',
+        },
+        edDraftURI: 'https://darobin.github.io/proto-handler-reqs/',
+        shortName: 'proto-handler-reqs',
+      };
+    </script>
+  </head>
+  <body>
+    <section id="abstract">
+      <p>
+        XXX put together requirements for protocol handlers
+      </p>
+    </section>
+    <section id="sotd"></section>
+    <section>
+      <h2>Notes from meeting/Dietrich</h2>
+      <pre>
+        - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/protocol_handlers
+        - lidel: +1, reuse 'manifest.json/protocol_handlers' but instead `uriTemplate` have `serviceworkert`
+          and path to .js like we have in https://developer.mozilla.org/en-US/docs/Web/Manifest (PWA manifest)
+        - lidel: +1,  Web Apps  have  https://developer.mozilla.org/en-US/docs/Web/Manifest/protocol_handlers
+          so maybe propose against that and say "webextensions should be the same"
+        - lidel: hm.. https://w3c.github.io/manifest/ ?
+        - dietrich: OS level handoff (mailto launches local) vs page (mailto loads a page) vs
+          programmatic handling (ipfs: a worker handles this and it may be an extension)
+      </pre>
+    </section>
+  </body>
+</html>
