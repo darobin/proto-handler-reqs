@@ -52,8 +52,39 @@
         is not incorporated into the current context and no further interaction with the protocol is possible.
         In effect, this is more a scheme dispatcher than a comprehensive handler for a given protocol.
       </p>
-
+      <p>
+        Today's on-ramp for new protocols to become used on the web beyond a simple handoff however is too steep.
+        While there is <a href="https://github.com/whatwg/html/issues/9158">interest from implementers in loosening
+        handler registration</a>, that does not extend to the ability to fully integrate new protocols into the
+        web stack such that they can be the source of top-level documents, iframes, fetch, images, etc.
+      </p>
+      <p>
+        This document captures requirements for browser extensions to be able to register as full-fledged (or
+        at least <em>fuller</em>-fledged) programmatic protocol handlers. For instance, using this approach an
+        extension could implement support for IPFS directly within any browser context.
+      </p>
     </section>
+    <section>
+      <h2>Integration</h2>
+      <p>
+        One goal is that registering a protocol handler in different ways and at different levels should map to
+        a unified underlying model to the extent possible, so as to ensure that a single code path controls
+        protocol handling.
+      </p>
+      <p>
+        With progress towards a IANA+blocklist approach as advocated in <a href="https://github.com/whatwg/html/issues/9158">whatwg/html#9158</a>,
+        there is no need to limit registration to <code>web+</code>- or <code>ext+</code>-prefixed schemes.
+      </p>
+      <p>
+        The proposed integration method for new protocol handling is to operate a Service Worker for that
+        protocol that can respond to <code>FetchEvent</code>s. The assumption is that the browser will
+        address any and all schemes with HTTP semantics, and it is up to the handler to figure out the
+        appropriate mapping, knowing that there will likely be impendance mismatch.
+      </p>
+    </section>
+    <!--
+      - as per lidel
+     -->
     <section>
       <h2>Notes from meeting/Dietrich</h2>
       <pre>
@@ -63,12 +94,6 @@
         - lidel: +1,  Web Apps  have  https://developer.mozilla.org/en-US/docs/Web/Manifest/protocol_handlers
           so maybe propose against that and say "webextensions should be the same"
         - lidel: hm.. https://w3c.github.io/manifest/ ?
-        - dietrich: OS level handoff (mailto launches local) vs page (mailto loads a page) vs
-          programmatic handling (ipfs: a worker handles this and it may be an extension)
-        - unified model but extensions might be allowed to do more
-        - note concerns with interception of protocols that may legitimately be used in iframes
-        - are ext+ and web+ actually treated differently? this feels like a detail that shouldn't be
-          surfaced to authors
     </section>
     <section>
       <h2>Integration Considerations</h2>
@@ -97,9 +122,10 @@
           submissions.
         </p>
         <p>
-          <strong>Proposal</strong>. We start with read-only; anything else produces a 405 error. A writable
-          iteration could involve an API to process arbitrary HTTP requests and gateway them to the underlying
-          protocol.
+          <strong>Proposal</strong>. One simpler option is to start with read-only; anything else produces a 405
+          error. A writable iteration could involve using <code>FetchEvent</code> to process arbitrary HTTP requests
+          and gateway them to the underlying protocol. Alternatively, we may go straight to the latter if there is
+          no specific concern with the approach.
         </p>
       </section>
 
