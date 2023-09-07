@@ -103,15 +103,44 @@
         security issues that our preference goes to selecting a strict default behavior instead.
       </p>
       <section>
-        <h2>Origins</h2>
+        <h2>URL Processing</h2>
         <p>
-          In order to integrate into the stack, a new scheme needs to map its URL-space onto origins. However,
-          not all schemes have <code>host</code> and <code>port</code> components.
+          URLs integrate deeply into the web stack and specific schemes can have a host (pun intended) of
+          different behaviors.
         </p>
-        <p>
-          <strong>Proposal</strong>. URLs are parsed as per [[url]]. Because the browser cannot guess the default
-          port for that scheme, the API is expected to provide it, if it is meaningful.
-        </p>
+        <section>
+          <h2>Origins</h2>
+          <p>
+            In order to integrate into the stack, a new scheme needs to map its URL-space onto origins. However,
+            not all schemes have <code>host</code> and <code>port</code> components.
+          </p>
+          <p>
+            <strong>Proposal</strong>. URLs are parsed as per [[url]]. Because the browser cannot guess the default
+            port for that scheme, the API is expected to provide it, if it is meaningful.
+          </p>
+        </section>
+        <section>
+          <h2>Credentials</h2>
+          <p>
+            URLs may have credentials components, and the basic URL parser will parse them if they are present. These
+            however can be problematic, what with embedding credentials in plain text and all.
+          </p>
+          <p>
+            <strong>Proposal</strong>. The browser parses them but removes them from the URL before calling the Service
+            Worker.
+          </p>
+        </section>
+        <section>
+          <h2>Canonicalization</h2>
+          <p>
+            In HTTP URLs, paths get canonicalized (e.g. <code>..</code> path segments are removed) but that is not the
+            case with all schemes.
+          </p>
+          <p>
+            <strong>Proposal</strong>. Developer expectations are that these canonicalized are resolved and many resources
+            simply assume it. We should canonicalize automatically.
+          </p>
+        </section>
       </section>
       <section>
         <h2>Writability</h2>
@@ -127,9 +156,82 @@
           no specific concern with the approach.
         </p>
       </section>
-
+      <section>
+        <h2>Secure</h2>
+        <p>
+          We need to determine if schemes are secure (support more powerful APIs, are allowed as mixed content).
+        </p>
+        <p>
+          <strong>Proposal</strong>. Extension-supported schemes are considered secure. Extensions are expected
+          to make sure that they do not map to insecure protocols.
+        </p>
+      </section>
+      <section>
+        <h2>CORS</h2>
+        <p>
+          Is the scheme subject to CORS gating?
+        </p>
+        <p>
+          <strong>Proposal</strong>. Yes. It is easy enough for an extension to handle CORS handshakes itself
+          according to its own preference.
+        </p>
+      </section>
+      <section>
+        <h2>Referrer</h2>
+        <p>
+          Does this scheme get sent as a referrer for loaded resources or navigations?
+        </p>
+        <p>
+          <strong>Proposal</strong>. No. The strict CSP should prevent the loading of resources from content
+          loaded in an extension-supported scheme, which would make a referrer moot. For navigation, the potential
+          tracking risk is not worth the value.
+        </p>
+      </section>
+      <section>
+        <h2>Top-level frame</h2>
+        <p>
+          Is this scheme only for resources loaded from another context or can it be loaded at the top level?
+        </p>
+        <p>
+          <strong>Proposal</strong>. It can be loaded at the top level.
+        </p>
+      </section>
+      <section>
+        <h2>Local Storage</h2>
+        <p>
+          Does the scheme support setting cookies, using local storage, etc. and if so according to which rules.
+        </p>
+        <p>
+          <strong>Proposal</strong>. Extension-supported schemes do <em>not</em> support any of these mechanisms
+          so as to avoid impacting privacy. However, the extension can expose a form of storage if desired.
+        </p>
+      </section>
+      <section>
+        <h2>CSP</h2>
+        <p>
+          We need to integrate into the CSP model for security to work properly.
+        </p>
+        <p>
+          <strong>Proposal</strong>. Default to a very strict CSP and don't allow the extension to override it. We can
+          loosen things later if need be.
+        </p>
+      </section>
+      <section>
+        <h2>Other questions</h2>
+        <p>
+          More questions need to be answered. From Eric Lawrence's list:
+        </p>
+        <ul>
+          <li>How do navigations to these urls interact with all of the other WebNavigation/WebRequest extensibility APIs?</li>
+          <li>Is this scheme allowed from Sandboxed frames?</li>
+          <li>How does the scheme interact with the sandbox? What process isolation is used?</li>
+          <li>Can such navigations only occur from trusted contexts or is JavaScript allowed to invoke such navigations?</li>
+        </ul>
+        <p>
+          We also need to look more closely at the details of what browsers do (see Fabrice's notes about Gecko
+          for instance).
+        </p>
+      </section>
     </section>
-    <!--
-     -->
   </body>
 </html>
