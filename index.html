@@ -81,19 +81,18 @@
         address any and all schemes with HTTP semantics, and it is up to the handler to figure out the
         appropriate mapping, knowing that there will likely be impendance mismatch.
       </p>
-    </section>
-    <!--
-      - as per lidel
-     -->
-    <section>
-      <h2>Notes from meeting/Dietrich</h2>
-      <pre>
-        - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/protocol_handlers
-        - lidel: +1, reuse 'manifest.json/protocol_handlers' but instead `uriTemplate` have `serviceworkert`
-          and path to .js like we have in https://developer.mozilla.org/en-US/docs/Web/Manifest (PWA manifest)
-        - lidel: +1,  Web Apps  have  https://developer.mozilla.org/en-US/docs/Web/Manifest/protocol_handlers
-          so maybe propose against that and say "webextensions should be the same"
-        - lidel: hm.. https://w3c.github.io/manifest/ ?
+      <p>
+        The current proposal only exposes this capability to extensions. In that context, registering a
+        Service Worker for handling by an extension is done using the
+        <code><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/protocol_handlers">protocol_handlers</a></code>
+        field. We suggest adding a <code>serviceWorker</code> field that points to a JS resource in the
+        extension implementing a Service Worker. The <code>serviceWorker</code> field takes precedence
+        over the <code>uriTemplate</code> field (but having both is not an error, this allows for an
+        upgrade path). (See <a href="https://github.com/ipfs/in-web-browsers/issues/212">notes from lidel
+        tracking the idea</a>.) If desirable, this could be extended to
+        <a href="https://developer.mozilla.org/en-US/docs/Web/Manifest/protocol_handlers">web app manifests</a>
+        as well.
+      </p>
     </section>
     <section>
       <h2>Integration Considerations</h2>
