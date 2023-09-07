@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <script src="https://www.w3.org/Tools/respec/respec-w3c" async class="remove"></script>
-    <title>Protocol Handler Requirements</title>
+    <title>Live Protocol Handler Requirements</title>
     <style>
       body {
         background: url(proposal.svg) no-repeat fixed !important;
@@ -37,10 +37,23 @@
   <body>
     <section id="abstract">
       <p>
-        XXX put together requirements for protocol handlers
+        This document captures requirements to evolve protocol handlers as available on the web. The goal is to
+        make it possible to extend the set of protocols that are supported while maintaining a high level of
+        security and trust for users.
       </p>
     </section>
     <section id="sotd"></section>
+    <section>
+      <h2>Handlers Beyond Handoff</h2>
+      <p>
+        Protocol handlers today are focused on single-shot handoff. When activating a <code>mailto:</code> link,
+        the browser will either hand it off to the OS for a native application to handle, or will pass it to a
+        (top-level) URL that will receive it as a parameter and process it. In either case, the interaction
+        is not incorporated into the current context and no further interaction with the protocol is possible.
+        In effect, this is more a scheme dispatcher than a comprehensive handler for a given protocol.
+      </p>
+
+    </section>
     <section>
       <h2>Notes from meeting/Dietrich</h2>
       <pre>
@@ -52,7 +65,46 @@
         - lidel: hm.. https://w3c.github.io/manifest/ ?
         - dietrich: OS level handoff (mailto launches local) vs page (mailto loads a page) vs
           programmatic handling (ipfs: a worker handles this and it may be an extension)
-      </pre>
+        - unified model but extensions might be allowed to do more
+        - note concerns with interception of protocols that may legitimately be used in iframes
+        - are ext+ and web+ actually treated differently? this feels like a detail that shouldn't be
+          surfaced to authors
     </section>
+    <section>
+      <h2>Integration Considerations</h2>
+      <p>
+        In order to plug a protocol as an extension to the browser's capabilities, we need to address more than
+        simply handing a URL off to an API that returns a stream. While it is possible to expose the many
+        options involved through an API, it is easy enough to shoot yourself in the foot and has enough potential
+        security issues that our preference goes to selecting a strict default behavior instead.
+      </p>
+      <section>
+        <h2>Origins</h2>
+        <p>
+          In order to integrate into the stack, a new scheme needs to map its URL-space onto origins. However,
+          not all schemes have <code>host</code> and <code>port</code> components.
+        </p>
+        <p>
+          <strong>Proposal</strong>. URLs are parsed as per [[url]]. Because the browser cannot guess the default
+          port for that scheme, the API is expected to provide it, if it is meaningful.
+        </p>
+      </section>
+      <section>
+        <h2>Writability</h2>
+        <p>
+          Many protocols aren't just read-only but also allow for writing. The browser needs to know what to do
+          to handle [[fetch]] verbs beyond <code>GET</code> and <code>HEAD</code> as well as <code>form</code>
+          submissions.
+        </p>
+        <p>
+          <strong>Proposal</strong>. We start with read-only; anything else produces a 405 error. A writable
+          iteration could involve an API to process arbitrary HTTP requests and gateway them to the underlying
+          protocol.
+        </p>
+      </section>
+
+    </section>
+    <!--
+     -->
   </body>
 </html>
