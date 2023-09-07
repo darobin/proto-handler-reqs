@@ -19,6 +19,9 @@
           ;
           h2.innerHTML = 'Proposal ';
           h2.appendChild(time);
+          // don't know why latest published won't go away
+          doc.querySelector('details dl dt')?.remove();
+          doc.querySelector('details dl dd')?.remove();
         }],
         editors: [{
           name: 'Robin Berjon',
