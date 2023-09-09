@@ -64,7 +64,7 @@
       <p>
         This document captures requirements for browser extensions to be able to register as full-fledged (or
         at least <em>fuller</em>-fledged) programmatic protocol handlers. For instance, using this approach an
-        extension could implement support for IPFS directly within any browser context.
+        extension could implement support for <a href="https://docs.ipfs.tech/concepts/what-is-ipfs/">IPFS</a> directly within any browser context.
       </p>
     </section>
     <section>
@@ -82,7 +82,7 @@
         The proposed integration method for new protocol handling is to operate a Service Worker for that
         protocol that can respond to <code>FetchEvent</code>s. The assumption is that the browser will
         address any and all schemes with HTTP semantics, and it is up to the handler to figure out the
-        appropriate mapping, knowing that there will likely be impendance mismatch.
+        appropriate mapping, knowing that there will likely be impedance mismatch.
       </p>
       <p>
         The current proposal only exposes this capability to extensions. In that context, registering a
