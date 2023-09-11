@@ -244,8 +244,10 @@
           <li>Can such navigations only occur from trusted contexts or is JavaScript allowed to invoke such navigations?</li>
         </ul>
         <p>
-          We also need to look more closely at the details of what browsers do (see Fabrice's notes about Gecko
-          for instance).
+          We also need to look more closely at the details of what browsers do. For instance, Gecko requires that protocols implement
+          <a href="https://searchfox.org/mozilla-central/source/netwerk/base/nsIProtocolHandler.idl"><code>nsIProtocolHandler</code></a>, which
+          returns a <a href="https://searchfox.org/mozilla-central/source/netwerk/base/nsIChannel.idl"><code>nsIChannel</code></a>. That doesn't
+          cover all the integration, though, for instance CSP would happen elsewhere.
         </p>
       </section>
     </section>
