@@ -92,10 +92,23 @@
         extension implementing a Service Worker. The <code>serviceWorker</code> field takes precedence
         over the <code>uriTemplate</code> field (but having both is not an error, this allows for an
         upgrade path). (See <a href="https://github.com/ipfs/in-web-browsers/issues/212">notes from lidel
-        tracking the idea</a>.) If desirable, this could be extended to
-        <a href="https://developer.mozilla.org/en-US/docs/Web/Manifest/protocol_handlers">web app manifests</a>
-        as well.
+        tracking the idea</a>.)
       </p>
+      <section>
+        <h2>Availability to Web Apps</h2>
+        <p>
+          In addition to extensions, this level of protocol handling could also be made available to PWAs. In terms of
+          design and code paths, the same <code>protocol_handlers</code> entry could be used in the
+          <a href="https://developer.mozilla.org/en-US/docs/Web/Manifest/protocol_handlers">web app manifests</a> as
+          we are recommending for extensions. Should that be supported, we don't anticipate the design of protocol
+          handlers to need to be different.
+        </p>
+        <p>
+          Extensions are the safest way to support this extension point, and it seems wise to limit support to that
+          pathway at least at first. However, it is good to note that the support could be extended to PWAs without
+          rearchitecting the system and without any change in syntax.
+        </p>
+      </section>
     </section>
     <section>
       <h2>Integration Considerations</h2>
