@@ -94,6 +94,12 @@
         upgrade path). (See <a href="https://github.com/ipfs/in-web-browsers/issues/212">notes from lidel
         tracking the idea</a>.)
       </p>
+      <p>
+        Note that custom protocol handlers of this kind need to be integrated at the same architectural position as
+        the browser's built-in protocol handling. Notably, they kick in <em>after</em> extension points to block or
+        modify network requests have been processed. If, for instance, an ad blocker has a denylist that includes
+        <code>ipfs:</code> URLs, those will be processed before the IPFS protocol handler is invoked.
+      </p>
       <section>
         <h2>Availability to Web Apps</h2>
         <p>
