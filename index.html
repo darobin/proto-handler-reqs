@@ -224,8 +224,9 @@
           Does the scheme support setting cookies, using local storage, etc. and if so according to which rules.
         </p>
         <p>
-          <strong>Proposal</strong>. Extension-supported schemes do <em>not</em> support any of these mechanisms
-          so as to avoid impacting privacy. However, the extension can expose a form of storage if desired.
+          <strong>Proposal</strong>. Extension-supported schemes support local storage and cookies. Implementations
+          are expected to apply partitioning based on the origin (as described above) as they would with an HTTP
+          origin.
         </p>
       </section>
       <section>
@@ -257,11 +258,12 @@
       <section>
         <h2>Other questions</h2>
         <p>
-          More questions need to be answered. From Eric Lawrence's list:
+          More questions need to be answered (some from Eric Lawrence's list):
         </p>
         <ul>
           <li>What process isolation is used? This isn't really a spec question but still needs answering.</li>
           <li>Can such navigations only occur from trusted contexts or is JavaScript allowed to invoke such navigations?</li>
+          <li>How does this integrate with navigation tracking prevention?</li>
         </ul>
         <p>
           We also need to look more closely at the details of what browsers do. For instance, Gecko requires that protocols implement
