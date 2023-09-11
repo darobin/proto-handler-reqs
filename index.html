@@ -239,14 +239,28 @@
         </p>
       </section>
       <section>
+        <h2>Sandboxing</h2>
+        <p>
+          Two relevant aspects apply with respect to sandboxing:
+        </p>
+        <ul>
+          <li>Does the <code>sandbox</code> attribute apply to frames that use such schemes?</li>
+          <li>Do these schemes count as custom schemes as per <code>allow-top-navigation-to-custom-protocols</code>?</li>
+        </ul>
+        <p>
+          <strong>Proposal</strong>. The <code>sandbox</code> attribute applies as it does in other contexts, ther is nothing
+          special about content from custom protocols given that they can be mapped from fetch. These scheme <em>do</em> count
+          as custom scheme even if they are implemented closer to the metal simply because that list is fixed to all
+          <a href="https://fetch.spec.whatwg.org/#fetch-scheme">non-fetch schemes</a>.
+        </p>
+      </section>
+      <section>
         <h2>Other questions</h2>
         <p>
           More questions need to be answered. From Eric Lawrence's list:
         </p>
         <ul>
-          <li>How do navigations to these urls interact with all of the other WebNavigation/WebRequest extensibility APIs?</li>
-          <li>Is this scheme allowed from Sandboxed frames?</li>
-          <li>How does the scheme interact with the sandbox? What process isolation is used?</li>
+          <li>What process isolation is used? This isn't really a spec question but still needs answering.</li>
           <li>Can such navigations only occur from trusted contexts or is JavaScript allowed to invoke such navigations?</li>
         </ul>
         <p>
