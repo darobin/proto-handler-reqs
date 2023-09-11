@@ -100,6 +100,53 @@
         modify network requests have been processed. If, for instance, an ad blocker has a denylist that includes
         <code>ipfs:</code> URLs, those will be processed before the IPFS protocol handler is invoked.
       </p>
+      <p>
+        A manifest with a Service Worker handling the protocol looks like this:
+      </p>
+      <pre class="example json" title="Manifest Entry">
+        {
+          "manifest_version": 2,
+          "name": "InterPlanetary Wonders",
+          "icons": {
+            "48": "planets.png",
+            "96": "planets@2x.png"
+          },
+          "version": "17.0.1",
+          "protocol_handlers": [
+            {
+              "protocol": "ipfs",
+              "name": "IPFS Makes Your Browser Fresh",
+              "serviceWorker": "js/gateway-loader.js"
+            }
+          ]
+        }
+      </pre>
+      <p>
+        And the Service Worker is straightforward:
+      </p>
+      <pre class="js example" title="Simple trusted proxying implementation">
+        self.addEventListener("fetch", (ev) => {
+          ev.respondWith(
+            (async () => {
+              const url = new URL(ev.request.url);
+              const gatewayURL = [
+                'https://ipfs.io/ipfs/',
+                url.hostname,
+                url.pathname || '/',
+                url.search || '',
+                url.hash || '',
+              ].join('');
+              const { method, headers, body, mode, credentials, cache, redirect,
+                referrer, referrerPolicy, integrity, signal } = ev.request;
+              return fetch(new Request(
+                gatewayURL,
+                { method, headers, body, mode, credentials, cache, redirect,
+                  referrer, referrerPolicy, integrity, signal }
+              ));
+            })(),
+          );
+        });
+      </pre>
       <section>
         <h2>Availability to Web Apps</h2>
         <p>
