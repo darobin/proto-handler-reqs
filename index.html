@@ -101,6 +101,18 @@
         <code>ipfs:</code> URLs, those will be processed before the IPFS protocol handler is invoked.
       </p>
       <p>
+        In the case of handoff protocol handlers, user agents can simply prompt the user to pick which handler
+        they wish to use after activating a link with a custom protocol. With programmatic handlers that can be
+        called upon to load a subresource, that is not a desirable behavior. In cases where a new handler is
+        being registered for a scheme that there is already a handler for, the user agent is encouraged to
+        pick which one will be used. User agents may simply use the latest handler to be registered, or may
+        prompt the user to select the one they wish to use by default. User agents should avoid having both
+        programmatic handlers and handoff handlers registered for the same scheme as that can create a confusing
+        experience if clicking on a custom protocol link offers to choose between those two but loading a
+        subresource only selects the programmatic one. In such cases, systematically using the the programmatic
+        handler is likely to be the most user-friendly option.
+      </p>
+      <p>
         A manifest with a Service Worker handling the protocol looks like this:
       </p>
       <pre class="example json" title="Manifest Entry">
